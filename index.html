@@ -1,302 +1,868 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
-<link rel="manifest" href="manifest.json">
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<meta
+  name="theme-color"
+  content="#111827"
+>
+
+<link
+  rel="manifest"
+  href="manifest.json"
+>
+
 <title>VokabelBuddy – Jelly</title>
 
 <style>
-*{box-sizing:border-box}
 
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,sans-serif;
-  background:#f4f6fb;
-  color:#111827
+/* ================================
+   GRUNDLAYOUT
+================================ */
+
+* {
+  box-sizing: border-box;
 }
 
-header{
-  background:#111827;
-  color:#fff;
-  padding:22px 18px;
-  border-radius:0 0 24px 24px
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: #f4f6fb;
+  color: #111827;
 }
 
-h1{
-  margin:0;
-  font-size:26px
+header {
+
+  background: #111827;
+
+  color: white;
+
+  padding:
+    22px
+    18px
+    20px;
+
+  border-radius:
+    0
+    0
+    24px
+    24px;
 }
 
-.sub{
-  opacity:.75
+header h1 {
+
+  margin: 0;
+
+  font-size: 27px;
+
 }
 
-main{
-  max-width:760px;
-  margin:auto;
-  padding:16px
+header .subtitle {
+
+  margin-top: 5px;
+
+  opacity: 0.75;
+
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px
+main {
+
+  width: 100%;
+
+  max-width: 760px;
+
+  margin: auto;
+
+  padding: 16px;
+
 }
 
-.card{
-  background:#fff;
-  padding:16px;
-  border-radius:16px;
-  box-shadow:0 3px 15px #0001
+/* ================================
+   CARDS
+================================ */
+
+.card {
+
+  background: white;
+
+  padding: 16px;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 4px 18px rgba(0,0,0,0.06);
+
 }
 
-button,
+.grid {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 12px;
+
+}
+
+.stat {
+
+  font-size: 26px;
+
+  font-weight: 800;
+
+}
+
+.muted {
+
+  color: #6b7280;
+
+  font-size: 13px;
+
+}
+
+/* ================================
+   BUTTONS
+================================ */
+
+button {
+
+  border: none;
+
+  border-radius: 16px;
+
+  padding: 14px;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  background: #111827;
+
+  color: white;
+
+}
+
+button.secondary {
+
+  background: #e8ecf5;
+
+  color: #111827;
+
+}
+
+button.danger {
+
+  background: #fee2e2;
+
+  color: #991b1b;
+
+}
+
+button:disabled {
+
+  opacity: 0.5;
+
+  cursor: not-allowed;
+
+}
+
+.wide {
+
+  width: 100%;
+
+}
+
+/* ================================
+   INPUTS
+================================ */
+
 input,
 select,
-textarea{
-  border-radius:16px
+textarea {
+
+  width: 100%;
+
+  border: 1px solid #d8dce7;
+
+  background: white;
+
+  border-radius: 15px;
+
+  padding: 13px;
+
+  font-size: 16px;
+
+  outline: none;
+
 }
 
-button{
-  border:0;
-  padding:13px;
-  font-weight:700;
-  font-size:15px;
-  background:#111827;
-  color:#fff;
-  cursor:pointer
+input:focus,
+select:focus,
+textarea:focus {
+
+  border-color: #6366f1;
+
 }
 
-button.secondary{
-  background:#e8ecf5;
-  color:#111827
+textarea {
+
+  min-height: 130px;
+
+  resize: vertical;
+
 }
 
-.wide{
-  width:100%
+.row {
+
+  display: flex;
+
+  gap: 10px;
+
 }
 
-.stat{
-  font-size:25px;
-  font-weight:800
+.row > * {
+
+  flex: 1;
+
 }
 
-.muted{
-  color:#6b7280;
-  font-size:13px
+/* ================================
+   NAVIGATION
+================================ */
+
+.top-buttons {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 10px;
+
+  margin-top: 12px;
+
 }
 
-section{
-  display:none;
-  margin-top:14px
+/* ================================
+   SECTIONS
+================================ */
+
+section {
+
+  display: none;
+
+  margin-top: 14px;
+
 }
 
-section.active{
-  display:block
+section.active {
+
+  display: block;
+
 }
 
-.row{
-  display:flex;
-  gap:10px
+/* ================================
+   LERNKARTE
+================================ */
+
+.word {
+
+  text-align: center;
+
+  font-size: 36px;
+
+  font-weight: 800;
+
+  margin-top: 28px;
+
+  margin-bottom: 8px;
+
+  min-height: 48px;
+
 }
 
-.row>*{
-  flex:1
+.translation {
+
+  text-align: center;
+
+  font-size: 21px;
+
+  color: #6b7280;
+
+  min-height: 32px;
+
 }
 
-input,
-select,
-textarea{
-  width:100%;
-  padding:13px;
-  border:1px solid #d8dce7;
-  background:#fff;
-  font-size:16px
+.learning-buttons {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 8px;
+
+  margin-top: 22px;
+
 }
 
-textarea{
-  min-height:120px
+/* ================================
+   LISTE
+================================ */
+
+.word-item {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 13px 0;
+
+  border-bottom:
+    1px solid #eeeeee;
+
 }
 
-.word{
-  text-align:center;
-  font-size:34px;
-  font-weight:800;
-  margin:24px 0 8px
+.word-item:last-child {
+
+  border-bottom: none;
+
 }
 
-.translation{
-  text-align:center;
-  font-size:20px;
-  color:#6b7280;
-  min-height:32px
+.word-info {
+
+  min-width: 0;
+
 }
 
-.actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:20px
+.word-name {
+
+  font-weight: 800;
+
 }
 
-.pill{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:999px;
-  background:#eef2ff;
-  font-size:13px
+.word-translation {
+
+  color: #6b7280;
+
+  font-size: 14px;
+
+  margin-top: 3px;
+
 }
 
-.item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding:12px 0;
-  border-bottom:1px solid #eee
+.word-actions {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
 }
 
-.item button{
-  padding:7px 9px;
-  margin-left:4px
+.language-pill {
+
+  display: inline-block;
+
+  background: #eef2ff;
+
+  border-radius: 999px;
+
+  padding: 6px 9px;
+
+  font-size: 13px;
+
 }
 
-.notice{
-  padding:12px;
-  border-radius:14px;
-  background:#fff8df;
-  margin-top:10px;
-  font-size:14px
+/* ================================
+   LOGIN
+================================ */
+
+.login-wrapper {
+
+  min-height:
+    100vh;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    20px;
+
 }
 
-@media(max-width:520px){
-  .word{
-    font-size:30px
+.login-card {
+
+  width: 100%;
+
+  max-width: 430px;
+
+}
+
+.login-logo {
+
+  text-align: center;
+
+  font-size: 60px;
+
+  margin-bottom: 5px;
+
+}
+
+.login-title {
+
+  text-align: center;
+
+  font-size: 28px;
+
+  font-weight: 800;
+
+}
+
+.login-subtitle {
+
+  text-align: center;
+
+  color: #6b7280;
+
+  margin-bottom: 25px;
+
+}
+
+.login-field {
+
+  margin-bottom: 12px;
+
+}
+
+.login-message {
+
+  margin-top: 12px;
+
+  padding: 11px;
+
+  border-radius: 12px;
+
+  background: #f3f4f6;
+
+  font-size: 14px;
+
+  display: none;
+
+}
+
+.login-message.error {
+
+  background: #fee2e2;
+
+  color: #991b1b;
+
+}
+
+.login-message.success {
+
+  background: #dcfce7;
+
+  color: #166534;
+
+}
+
+/* ================================
+   USER BAR
+================================ */
+
+.user-bar {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 12px;
+
+}
+
+.user-email {
+
+  font-size: 13px;
+
+  color: #6b7280;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+}
+
+/* ================================
+   EMPTY
+================================ */
+
+.empty {
+
+  text-align: center;
+
+  padding: 25px 10px;
+
+  color: #6b7280;
+
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media(max-width:520px) {
+
+  .word {
+
+    font-size: 30px;
+
   }
+
+  .row {
+
+    flex-direction: column;
+
+  }
+
 }
+
 </style>
+
 </head>
 
 <body>
 
+
+<!-- ==========================================
+     LOGIN
+=========================================== -->
+
+<div
+  id="loginScreen"
+  class="login-wrapper"
+>
+
+<div class="card login-card">
+
+<div class="login-logo">
+📚
+</div>
+
+<div class="login-title">
+VokabelBuddy
+</div>
+
+<div class="login-subtitle">
+Jelly · Englisch & Französisch
+</div>
+
+<div class="login-field">
+
+<input
+  id="loginEmail"
+  type="email"
+  placeholder="E-Mail"
+  autocomplete="email"
+>
+
+</div>
+
+<div class="login-field">
+
+<input
+  id="loginPassword"
+  type="password"
+  placeholder="Passwort"
+  autocomplete="current-password"
+>
+
+</div>
+
+<button
+  class="wide"
+  onclick="login()"
+>
+
+🔐 Einloggen
+
+</button>
+
+<div
+  id="loginMessage"
+  class="login-message"
+></div>
+
+</div>
+
+</div>
+
+
+<!-- ==========================================
+     APP
+=========================================== -->
+
+<div
+  id="app"
+  style="display:none"
+>
+
 <header>
-  <h1>📚 VokabelBuddy</h1>
-  <div class="sub">👦 Jelly · Englisch & Französisch</div>
+
+<h1>
+📚 VokabelBuddy
+</h1>
+
+<div class="subtitle">
+👦 Jelly · Englisch & Französisch
+</div>
+
 </header>
+
 
 <main>
 
-<div class="grid">
 
-  <div class="card">
-    <div class="muted">🔥 Streak</div>
-    <div class="stat" id="streak">0</div>
-  </div>
+<!-- USER -->
 
-  <div class="card">
-    <div class="muted">⭐ XP</div>
-    <div class="stat" id="xp">0</div>
-  </div>
+<div class="card user-bar">
+
+<div>
+
+<div class="muted">
+Angemeldet als
+</div>
+
+<div
+  id="currentUser"
+  class="user-email"
+>
+</div>
 
 </div>
 
-<div class="grid" style="margin-top:12px">
-
-  <button onclick="show('learn')">
-    🎯 Jetzt lernen
-  </button>
-
-  <button class="secondary" onclick="show('add')">
-    ➕ Vokabeln
-  </button>
-
-</div>
-
-<div class="grid" style="margin-top:12px">
-
-  <button class="secondary" onclick="show('list')">
-    📚 Meine Wörter
-  </button>
-
-  <button class="secondary" onclick="show('parent')">
-    👨‍👩‍👦 Eltern
-  </button>
+<button
+  class="secondary"
+  onclick="logout()"
+>
+Abmelden
+</button>
 
 </div>
 
 
-<!-- LERNEN -->
+<!-- STATS -->
 
-<section id="learn" class="active">
+<div
+  class="grid"
+  style="margin-top:12px"
+>
 
 <div class="card">
 
-  <div class="row">
+<div class="muted">
+🔥 Streak
+</div>
 
-    <select id="learnLang" onchange="startSession()">
+<div
+  id="streak"
+  class="stat"
+>
+0
+</div>
 
-      <option value="en">
-        🇬🇧 Englisch
-      </option>
-
-      <option value="fr">
-        🇫🇷 Französisch
-      </option>
-
-    </select>
-
-    <span class="pill" id="count">
-      0 Wörter
-    </span>
-
-  </div>
+</div>
 
 
-  <div class="word" id="question">
-    Noch keine Vokabeln
-  </div>
+<div class="card">
 
-  <div class="translation" id="answer"></div>
+<div class="muted">
+⭐ XP
+</div>
+
+<div
+  id="xp"
+  class="stat"
+>
+0
+</div>
+
+</div>
+
+</div>
 
 
-  <div class="actions">
+<!-- NAVIGATION -->
 
-    <button onclick="reveal()">
-      👀 Lösung
-    </button>
+<div class="top-buttons">
 
-    <button onclick="grade(2)">
-      🤔 Schwer
-    </button>
+<button
+  onclick="showSection('learn')"
+>
+🎯 Jetzt lernen
+</button>
 
-    <button onclick="grade(1)">
-      ❌ Falsch
-    </button>
+<button
+  class="secondary"
+  onclick="showSection('add')"
+>
+➕ Vokabeln
+</button>
 
-    <button onclick="grade(3)">
-      ✅ Richtig
-    </button>
+<button
+  class="secondary"
+  onclick="showSection('list')"
+>
+📚 Meine Wörter
+</button>
 
-  </div>
+<button
+  class="secondary"
+  onclick="showSection('parent')"
+>
+👨‍👩‍👦 Eltern
+</button>
+
+</div>
+
+
+<!-- ==========================================
+     LERNEN
+=========================================== -->
+
+<section
+  id="learn"
+  class="active"
+>
+
+<div class="card">
+
+<div class="row">
+
+<select
+  id="learnLanguage"
+  onchange="startLearning()"
+>
+
+<option value="en">
+🇬🇧 Englisch
+</option>
+
+<option value="fr">
+🇫🇷 Französisch
+</option>
+
+</select>
+
+<div
+  id="wordCount"
+  class="language-pill"
+  style="text-align:center"
+>
+0 Wörter
+</div>
+
+</div>
+
+
+<div
+  id="question"
+  class="word"
+>
+Lade Vokabeln...
+</div>
+
+
+<div
+  id="answer"
+  class="translation"
+>
+</div>
+
+
+<div class="learning-buttons">
+
+<button
+  onclick="showAnswer()"
+>
+👀 Lösung
+</button>
+
+<button
+  onclick="gradeWord('hard')"
+>
+🤔 Schwer
+</button>
+
+<button
+  onclick="gradeWord('wrong')"
+>
+❌ Falsch
+</button>
+
+<button
+  onclick="gradeWord('correct')"
+>
+✅ Richtig
+</button>
+
+</div>
 
 </div>
 
 </section>
 
 
-<!-- VOKABELN HINZUFÜGEN -->
+<!-- ==========================================
+     VOKABELN HINZUFÜGEN
+=========================================== -->
 
 <section id="add">
 
 <div class="card">
 
-<h2>➕ Vokabeln hinzufügen</h2>
+<h2>
+➕ Vokabeln hinzufügen
+</h2>
 
 <div class="row">
 
-<select id="addLang">
+<select id="addLanguage">
 
 <option value="en">
 🇬🇧 Englisch
@@ -309,32 +875,55 @@ textarea{
 </select>
 
 <input
-id="lesson"
-placeholder="Unit / Lektion">
+  id="lesson"
+  placeholder="Unit / Lektion"
+/>
 
 </div>
 
+
 <br>
 
+
 <textarea
-id="bulk"
-placeholder="Eine pro Zeile, z.B.
+  id="bulkWords"
+  placeholder="Eine Vokabel pro Zeile:
+
 school = Schule
 teacher = Lehrer
-homework = Hausaufgaben"></textarea>
+homework = Hausaufgaben"
+></textarea>
+
 
 <button
-class="wide"
-style="margin-top:10px"
-onclick="addWords()">
+  class="wide"
+  style="margin-top:10px"
+  onclick="saveWords()"
+>
 
-💾 Speichern
+☁️ Vokabeln speichern
 
 </button>
 
-<div class="notice">
 
-Tipp: Eine komplette Vokabelliste kann auf einmal eingefügt werden.
+<div class="notice"
+style="
+margin-top:12px;
+padding:12px;
+border-radius:14px;
+background:#fff8df;
+font-size:14px;
+">
+
+💡 Eine komplette Liste kann auf einmal eingefügt werden.
+
+Beispiel:
+
+school = Schule
+
+teacher = Lehrer
+
+homework = Hausaufgaben
 
 </div>
 
@@ -343,38 +932,72 @@ Tipp: Eine komplette Vokabelliste kann auf einmal eingefügt werden.
 </section>
 
 
-<!-- WORTLISTE -->
+<!-- ==========================================
+     WORTLISTE
+=========================================== -->
 
 <section id="list">
 
 <div class="card">
 
-<h2>📚 Meine Wörter</h2>
+<div
+  style="
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  "
+>
 
-<div id="wordList"></div>
+<h2>
+📚 Meine Wörter
+</h2>
+
+<button
+  class="secondary"
+  onclick="loadWords()"
+>
+🔄
+</button>
+
+</div>
+
+
+<div
+  id="wordList"
+>
+</div>
 
 </div>
 
 </section>
 
 
-<!-- ELTERN -->
+<!-- ==========================================
+     ELTERN
+=========================================== -->
 
 <section id="parent">
 
 <div class="card">
 
-<h2>👨‍👩‍👦 Elternübersicht</h2>
+<h2>
+👨‍👩‍👦 Elternübersicht
+</h2>
+
 
 <div class="grid">
 
 <div>
 
 <div class="muted">
-Antworten
+Beantwortet
 </div>
 
-<div class="stat" id="answers">
+<div
+  id="answers"
+  class="stat"
+>
 0
 </div>
 
@@ -387,7 +1010,10 @@ Antworten
 Trefferquote
 </div>
 
-<div class="stat" id="accuracy">
+<div
+  id="accuracy"
+  class="stat"
+>
 0%
 </div>
 
@@ -395,402 +1021,1297 @@ Trefferquote
 
 </div>
 
-<p class="muted">
 
-Der aktuelle Prototyp speichert den Lernstand lokal.
-Die Supabase-Synchronisation kommt als nächster Schritt.
+<div
+  style="
+  margin-top:15px;
+  padding:14px;
+  background:#f8fafc;
+  border-radius:14px;
+  "
+>
+
+<div class="muted">
+👦 Jelly
+</div>
+
+<p style="margin-bottom:0">
+
+Der Lernstand wird auf diesem Gerät gespeichert.
 
 </p>
 
 </div>
 
+</div>
+
 </section>
 
+
 </main>
+
+</div>
 
 
 <script>
 
-const KEY='vb_jelly_v3';
-
-let db=JSON.parse(
-localStorage.getItem(KEY) ||
-'{"words":[],"xp":0,"streak":0,"answers":0,"correct":0}'
-);
-
-let session={
-pool:[],
-i:0
-};
+/* ==================================================
+   SUPABASE
+================================================== */
 
 
-function save(){
-
-localStorage.setItem(
-KEY,
-JSON.stringify(db)
-);
-
-stats();
-
-}
+/*
+   DEINE SUPABASE DATEN
+*/
 
 
-function stats(){
-
-document.getElementById('xp').textContent=db.xp;
-
-document.getElementById('streak').textContent=db.streak;
-
-document.getElementById('answers').textContent=db.answers;
-
-document.getElementById('accuracy').textContent=
-(
-db.answers
-?
-Math.round(
-db.correct/db.answers*100
-)
-:
-0
-)+'%';
-
-}
+const SUPABASE_URL =
+"https://ugavdjehkpihbfkaymnn.supabase.co";
 
 
-function show(id){
-
-document
-.querySelectorAll('section')
-.forEach(x=>x.classList.remove('active'));
-
-document
-.getElementById(id)
-.classList.add('active');
-
-if(id==='learn')
-startSession();
-
-if(id==='list')
-renderList();
-
-}
+const SUPABASE_KEY =
+"DEIN_PUBLISHABLE_KEY_HIER";
 
 
-function startSession(){
+/*
+   WICHTIG:
 
-let language=
-document.getElementById('learnLang').value;
+   Hier deinen vorhandenen
 
-session.pool=
-db.words.filter(
-w=>w.language===language
-);
+   sb_publishable_...
 
-session.i=0;
-
-document.getElementById('count').textContent=
-session.pool.length+' Wörter';
-
-next();
-
-}
+   Key einsetzen.
+*/
 
 
-function next(){
-
-if(!session.pool.length){
-
-document.getElementById('question').textContent=
-'Noch keine Vokabeln';
-
-document.getElementById('answer').textContent=
-'Füge zuerst Wörter hinzu.';
-
-return;
-
-}
-
-let w=
-session.pool[
-session.i%session.pool.length
-];
-
-document.getElementById('question').textContent=
-w.word;
-
-document.getElementById('answer').textContent='';
-
-}
+/* ==================================================
+   EINFACHER SUPABASE CLIENT
+================================================== */
 
 
-function reveal(){
+let accessToken = null;
 
-if(!session.pool.length)
-return;
+let currentUser = null;
 
-document.getElementById('answer').textContent=
-session.pool[
-session.i%session.pool.length
-].translation;
+let words = [];
+
+let learningPool = [];
+
+let learningIndex = 0;
+
+let answerShown = false;
+
+
+/* ==================================================
+   SUPABASE REQUEST
+================================================== */
+
+
+async function supabaseRequest(
+  endpoint,
+  options = {}
+) {
+
+  const headers = {
+
+    "apikey":
+      SUPABASE_KEY,
+
+    "Content-Type":
+      "application/json"
+
+  };
+
+
+  if(accessToken){
+
+    headers[
+      "Authorization"
+    ] =
+      "Bearer " +
+      accessToken;
+
+  }
+
+
+  const response =
+    await fetch(
+      SUPABASE_URL +
+      endpoint,
+      {
+        ...options,
+        headers:{
+          ...headers,
+          ...(options.headers || {})
+        }
+      }
+    );
+
+
+  let data = null;
+
+  try {
+
+    data =
+      await response.json();
+
+  } catch(e) {}
+
+
+  if(!response.ok){
+
+    throw new Error(
+      data?.message ||
+      data?.msg ||
+      data?.error_description ||
+      "Supabase Fehler"
+    );
+
+  }
+
+
+  return data;
 
 }
 
 
-function grade(n){
+/* ==================================================
+   LOGIN
+================================================== */
 
-if(!session.pool.length)
-return;
 
-if(!document.getElementById('answer').textContent){
+async function login(){
 
-reveal();
+  const email =
+    document
+      .getElementById("loginEmail")
+      .value
+      .trim();
 
-return;
+  const password =
+    document
+      .getElementById("loginPassword")
+      .value;
+
+
+  if(!email || !password){
+
+    showLoginMessage(
+      "Bitte E-Mail und Passwort eingeben.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  showLoginMessage(
+    "Anmeldung läuft...",
+    false
+  );
+
+
+  try {
+
+    const data =
+      await supabaseRequest(
+        "/auth/v1/token?grant_type=password",
+        {
+          method:"POST",
+
+          body:JSON.stringify({
+            email,
+            password
+          })
+        }
+      );
+
+
+    accessToken =
+      data.access_token;
+
+    currentUser =
+      data.user;
+
+
+    localStorage.setItem(
+      "vb_access_token",
+      accessToken
+    );
+
+    localStorage.setItem(
+      "vb_user",
+      JSON.stringify(
+        currentUser
+      )
+    );
+
+
+    openApp();
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+    showLoginMessage(
+      "Login fehlgeschlagen: " +
+      error.message,
+      true
+    );
+
+  }
 
 }
 
-db.answers++;
 
-if(n===3){
+/* ==================================================
+   SESSION WIEDERHERSTELLEN
+================================================== */
 
-db.correct++;
-db.xp+=10;
+
+async function restoreSession(){
+
+  const savedToken =
+    localStorage.getItem(
+      "vb_access_token"
+    );
+
+  const savedUser =
+    localStorage.getItem(
+      "vb_user"
+    );
+
+
+  if(
+    !savedToken ||
+    !savedUser
+  ){
+
+    showLogin();
+
+    return;
+
+  }
+
+
+  accessToken =
+    savedToken;
+
+  currentUser =
+    JSON.parse(savedUser);
+
+
+  try {
+
+    const user =
+      await supabaseRequest(
+        "/auth/v1/user"
+      );
+
+    currentUser =
+      user;
+
+    localStorage.setItem(
+      "vb_user",
+      JSON.stringify(
+        user
+      )
+    );
+
+
+    openApp();
+
+  }
+
+  catch(error){
+
+    console.log(
+      "Session abgelaufen."
+    );
+
+    logout();
+
+  }
 
 }
-else if(n===2){
 
-db.xp+=4;
+
+/* ==================================================
+   APP ÖFFNEN
+================================================== */
+
+
+async function openApp(){
+
+  document
+    .getElementById(
+      "loginScreen"
+    )
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById(
+      "app"
+    )
+    .style.display =
+      "block";
+
+
+  document
+    .getElementById(
+      "currentUser"
+    )
+    .textContent =
+      currentUser?.email ||
+      "Jelly";
+
+
+  loadStats();
+
+  await loadWords();
+
+  startLearning();
 
 }
-else{
 
-db.xp++;
+
+/* ==================================================
+   LOGOUT
+================================================== */
+
+
+function logout(){
+
+  accessToken = null;
+
+  currentUser = null;
+
+  words = [];
+
+  localStorage.removeItem(
+    "vb_access_token"
+  );
+
+  localStorage.removeItem(
+    "vb_user"
+  );
+
+
+  document
+    .getElementById(
+      "app"
+    )
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById(
+      "loginScreen"
+    )
+    .style.display =
+      "flex";
 
 }
 
-save();
 
-session.i++;
+/* ==================================================
+   LOGIN SCREEN
+================================================== */
 
-next();
+
+function showLogin(){
+
+  document
+    .getElementById(
+      "loginScreen"
+    )
+    .style.display =
+      "flex";
+
+
+  document
+    .getElementById(
+      "app"
+    )
+    .style.display =
+      "none";
 
 }
 
 
-function addWords(){
-
-let text=
-document.getElementById('bulk').value.trim();
-
-if(!text){
-
-alert('Bitte Vokabeln eingeben.');
-
-return;
-
-}
-
-let added=0;
-
-text
-.split(/\n/)
-.forEach(line=>{
-
-let p=
-line.split(
-/\s*(?:=|;|→|->)\s*/
-);
-
-if(
-p.length>=2 &&
-p[0].trim() &&
-p.slice(1).join('=').trim()
+function showLoginMessage(
+  text,
+  error
 ){
 
-db.words.push({
-
-id:crypto.randomUUID(),
-
-language:
-document.getElementById('addLang').value,
-
-lesson:
-document.getElementById('lesson').value,
-
-word:
-p[0].trim(),
-
-translation:
-p.slice(1).join('=').trim()
-
-});
-
-added++;
-
-}
-
-});
+  const box =
+    document
+      .getElementById(
+        "loginMessage"
+      );
 
 
-save();
+  box.textContent =
+    text;
 
-document.getElementById('bulk').value='';
+  box.style.display =
+    "block";
 
-alert(
-added+' Vokabeln gespeichert!'
-);
 
-show('learn');
+  box.className =
+    "login-message " +
+    (error
+      ? "error"
+      : "success");
 
 }
 
 
-function renderList(){
-
-let el=
-document.getElementById('wordList');
-
-if(!db.words.length){
-
-el.innerHTML=
-'<p class="muted">Noch keine Vokabeln.</p>';
-
-return;
-
-}
+/* ==================================================
+   NAVIGATION
+================================================== */
 
 
-el.innerHTML=
-db.words.map(w=>`
+function showSection(id){
 
-<div class="item">
-
-<span>
-
-<b>
-${esc(w.word)}
-</b>
-
-<br>
-
-<span class="muted">
-
-${esc(w.translation)}
-
-${w.lesson
-?
-' · '+esc(w.lesson)
-:
-''}
-
-</span>
-
-</span>
+  document
+    .querySelectorAll(
+      "section"
+    )
+    .forEach(
+      section =>
+        section.classList.remove(
+          "active"
+        )
+    );
 
 
-<span>
-
-<span class="pill">
-
-${w.language==='en'
-?
-'🇬🇧'
-:
-'🇫🇷'}
-
-</span>
+  document
+    .getElementById(id)
+    .classList.add(
+      "active"
+    );
 
 
-<button
-class="secondary"
-onclick="deleteWord('${w.id}')">
+  if(id === "learn"){
 
-🗑️
+    startLearning();
 
-</button>
+  }
 
-</span>
 
-</div>
+  if(id === "list"){
 
-`).join('');
+    loadWords();
+
+  }
 
 }
 
 
-function deleteWord(id){
-
-const word=
-db.words.find(
-x=>x.id===id
-);
-
-if(!word)
-return;
+/* ==================================================
+   VOKABELN AUS SUPABASE LADEN
+================================================== */
 
 
-if(
-!confirm(
-'Vokabel „'+
-word.word+
-'“ wirklich löschen?'
-)
-)
-return;
+async function loadWords(){
+
+  if(!accessToken){
+
+    return;
+
+  }
 
 
-db.words=
-db.words.filter(
-x=>x.id!==id
-);
+  try {
 
-save();
+    const data =
+      await supabaseRequest(
+        "/rest/v1/words?select=*&order=created_at.desc"
+      );
 
-renderList();
 
-startSession();
+    words =
+      Array.isArray(data)
+        ? data
+        : [];
+
+
+    renderWordList();
+
+    updateWordCount();
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Vokabeln konnten nicht geladen werden:",
+      error
+    );
+
+
+    document
+      .getElementById(
+        "wordList"
+      )
+      .innerHTML =
+
+      "<div class='empty'>" +
+      "❌ Vokabeln konnten nicht geladen werden.<br><br>" +
+      error.message +
+      "</div>";
+
+  }
 
 }
 
 
-function esc(s){
+/* ==================================================
+   VOKABELN SPEICHERN
+================================================== */
 
-return s.replace(
-/[&<>"']/g,
 
-c=>({
+async function saveWords(){
 
-'&':'&amp;',
-'<':'&lt;',
-'>':'&gt;',
-'"':'&quot;',
-"'":'&#039;'
+  const language =
+    document
+      .getElementById(
+        "addLanguage"
+      )
+      .value;
 
-}[c])
 
-);
+  const lesson =
+    document
+      .getElementById(
+        "lesson"
+      )
+      .value
+      .trim();
+
+
+  const text =
+    document
+      .getElementById(
+        "bulkWords"
+      )
+      .value
+      .trim();
+
+
+  if(!text){
+
+    alert(
+      "Bitte Vokabeln eingeben."
+    );
+
+    return;
+
+  }
+
+
+  const lines =
+    text
+      .split(/\n/)
+      .map(
+        line => line.trim()
+      )
+      .filter(Boolean);
+
+
+  const newWords = [];
+
+
+  for(
+    const line of lines
+  ){
+
+    const parts =
+      line.split(
+        /\s*(?:=|;|→|->)\s*/
+      );
+
+
+    if(parts.length < 2){
+
+      continue;
+
+    }
+
+
+    const word =
+      parts[0].trim();
+
+
+    const translation =
+      parts
+        .slice(1)
+        .join("=")
+        .trim();
+
+
+    if(
+      !word ||
+      !translation
+    ){
+
+      continue;
+
+    }
+
+
+    newWords.push({
+
+      language,
+
+      lesson,
+
+      word,
+
+      translation,
+
+      user_id:
+        currentUser.id
+
+    });
+
+  }
+
+
+  if(!newWords.length){
+
+    alert(
+      "Keine gültigen Vokabeln gefunden."
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    const saved =
+      await supabaseRequest(
+        "/rest/v1/words",
+        {
+          method:"POST",
+
+          headers:{
+            "Prefer":
+              "return=representation"
+          },
+
+          body:
+            JSON.stringify(
+              newWords
+            )
+
+        }
+      );
+
+
+    /*
+      Falls deine Datenbank
+      family_id automatisch
+      setzt, ist alles gut.
+
+      user_id wird von uns
+      direkt gesetzt.
+    */
+
+
+    document
+      .getElementById(
+        "bulkWords"
+      )
+      .value = "";
+
+
+    alert(
+      newWords.length +
+      " Vokabeln wurden gespeichert! ☁️"
+    );
+
+
+    await loadWords();
+
+    showSection(
+      "learn"
+    );
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+    alert(
+      "Fehler beim Speichern:\n\n" +
+      error.message
+    );
+
+  }
 
 }
 
 
-stats();
+/* ==================================================
+   WORTLISTE
+================================================== */
 
-startSession();
+
+function renderWordList(){
+
+  const container =
+    document
+      .getElementById(
+        "wordList"
+      );
 
 
-if(
-'serviceWorker'
-in navigator
+  if(!words.length){
+
+    container.innerHTML =
+      "<div class='empty'>" +
+      "📚 Noch keine Vokabeln vorhanden." +
+      "</div>";
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    words
+      .map(
+        word => `
+
+        <div class="word-item">
+
+          <div class="word-info">
+
+            <div class="word-name">
+
+              ${escapeHtml(
+                word.word
+              )}
+
+            </div>
+
+            <div class="word-translation">
+
+              ${escapeHtml(
+                word.translation
+              )}
+
+              ${
+                word.lesson
+                  ? " · " +
+                    escapeHtml(
+                      word.lesson
+                    )
+                  : ""
+              }
+
+            </div>
+
+          </div>
+
+
+          <div class="word-actions">
+
+            <span class="language-pill">
+
+              ${
+                word.language === "en"
+                  ? "🇬🇧"
+                  : "🇫🇷"
+              }
+
+            </span>
+
+
+            <button
+              class="danger"
+              onclick="deleteWord('${word.id}')"
+              title="Vokabel löschen"
+            >
+
+              🗑️
+
+            </button>
+
+          </div>
+
+        </div>
+
+        `
+      )
+      .join("");
+
+}
+
+
+/* ==================================================
+   VOKABEL LÖSCHEN
+================================================== */
+
+
+async function deleteWord(id){
+
+  const word =
+    words.find(
+      item =>
+        item.id === id
+    );
+
+
+  if(!word){
+
+    return;
+
+  }
+
+
+  const confirmed =
+    confirm(
+      "Vokabel „" +
+      word.word +
+      "“ wirklich löschen?"
+    );
+
+
+  if(!confirmed){
+
+    return;
+
+  }
+
+
+  try {
+
+    await supabaseRequest(
+      "/rest/v1/words?id=eq." +
+      encodeURIComponent(id),
+      {
+        method:"DELETE"
+      }
+    );
+
+
+    words =
+      words.filter(
+        item =>
+          item.id !== id
+      );
+
+
+    renderWordList();
+
+    updateWordCount();
+
+    startLearning();
+
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+    alert(
+      "Löschen fehlgeschlagen:\n\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* ==================================================
+   LERNEN
+================================================== */
+
+
+function startLearning(){
+
+  const language =
+    document
+      .getElementById(
+        "learnLanguage"
+      )
+      .value;
+
+
+  learningPool =
+    words.filter(
+      word =>
+        word.language ===
+        language
+    );
+
+
+  learningIndex = 0;
+
+  answerShown = false;
+
+
+  updateWordCount();
+
+  nextWord();
+
+}
+
+
+function updateWordCount(){
+
+  const language =
+    document
+      .getElementById(
+        "learnLanguage"
+      )
+      ?.value;
+
+
+  if(!language){
+
+    return;
+
+  }
+
+
+  const count =
+    words.filter(
+      word =>
+        word.language ===
+        language
+    ).length;
+
+
+  document
+    .getElementById(
+      "wordCount"
+    )
+    .textContent =
+      count +
+      " Wörter";
+
+}
+
+
+function nextWord(){
+
+  const question =
+    document
+      .getElementById(
+        "question"
+      );
+
+
+  const answer =
+    document
+      .getElementById(
+        "answer"
+      );
+
+
+  if(!learningPool.length){
+
+    question.textContent =
+      "Noch keine Vokabeln";
+
+
+    answer.textContent =
+      "Füge zuerst Vokabeln hinzu.";
+
+    return;
+
+  }
+
+
+  const word =
+    learningPool[
+      learningIndex %
+      learningPool.length
+    ];
+
+
+  question.textContent =
+    word.word;
+
+
+  answer.textContent =
+    "";
+
+
+  answerShown =
+    false;
+
+}
+
+
+/* ==================================================
+   LÖSUNG
+================================================== */
+
+
+function showAnswer(){
+
+  if(!learningPool.length){
+
+    return;
+
+  }
+
+
+  const word =
+    learningPool[
+      learningIndex %
+      learningPool.length
+    ];
+
+
+  document
+    .getElementById(
+      "answer"
+    )
+    .textContent =
+      word.translation;
+
+
+  answerShown =
+    true;
+
+}
+
+
+/* ==================================================
+   BEWERTUNG
+================================================== */
+
+
+function gradeWord(
+  result
 ){
 
-navigator
-.serviceWorker
-.register('sw.js');
+  if(!learningPool.length){
+
+    return;
+
+  }
+
+
+  if(!answerShown){
+
+    showAnswer();
+
+    return;
+
+  }
+
+
+  /*
+    Lokale Statistik
+  */
+
+
+  let stats =
+    JSON.parse(
+      localStorage.getItem(
+        "vb_stats"
+      ) ||
+      '{"xp":0,"answers":0,"correct":0,"streak":0}'
+    );
+
+
+  stats.answers++;
+
+
+  if(
+    result ===
+    "correct"
+  ){
+
+    stats.correct++;
+
+    stats.xp += 10;
+
+  }
+
+  else if(
+    result ===
+    "hard"
+  ){
+
+    stats.xp += 4;
+
+  }
+
+  else{
+
+    stats.xp += 1;
+
+  }
+
+
+  /*
+    Einfache Streak-Logik
+  */
+
+
+  if(
+    result ===
+    "correct"
+  ){
+
+    stats.streak++;
+
+  }
+
+
+  localStorage.setItem(
+    "vb_stats",
+    JSON.stringify(
+      stats
+    )
+  );
+
+
+  loadStats();
+
+
+  learningIndex++;
+
+  nextWord();
 
 }
+
+
+/* ==================================================
+   STATISTIK
+================================================== */
+
+
+function loadStats(){
+
+  const stats =
+    JSON.parse(
+      localStorage.getItem(
+        "vb_stats"
+      ) ||
+      '{"xp":0,"answers":0,"correct":0,"streak":0}'
+    );
+
+
+  document
+    .getElementById(
+      "xp"
+    )
+    .textContent =
+      stats.xp;
+
+
+  document
+    .getElementById(
+      "answers"
+    )
+    .textContent =
+      stats.answers;
+
+
+  document
+    .getElementById(
+      "streak"
+    )
+    .textContent =
+      stats.streak;
+
+
+  const accuracy =
+    stats.answers
+      ? Math.round(
+          stats.correct /
+          stats.answers *
+          100
+        )
+      : 0;
+
+
+  document
+    .getElementById(
+      "accuracy"
+    )
+    .textContent =
+      accuracy +
+      "%";
+
+}
+
+
+/* ==================================================
+   HTML SICHER MACHEN
+================================================== */
+
+
+function escapeHtml(
+  value
+){
+
+  return String(
+    value ?? ""
+  )
+  .replace(
+    /[&<>"']/g,
+
+    char => ({
+
+      "&":
+        "&amp;",
+
+      "<":
+        "&lt;",
+
+      ">":
+        "&gt;",
+
+      '"':
+        "&quot;",
+
+      "'":
+        "&#039;"
+
+    }[char])
+
+  );
+
+}
+
+
+/* ==================================================
+   START
+================================================== */
+
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function(){
+
+    restoreSession();
+
+  }
+);
 
 </script>
 
 </body>
+
 </html>
