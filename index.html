@@ -1,181 +1,252 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111827">
-<link rel="manifest" href="manifest.json">
-<title>VokabelBuddy – Jelly</title>
+<title>VokabelBuddy</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f4f6fb;color:#111827}
-header{background:#111827;color:#fff;padding:22px 18px;border-radius:0 0 24px 24px}
-header h1{margin:0;font-size:27px}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#f3f4f6;
+  color:#111827
+}
+header{
+  background:#111827;
+  color:white;
+  padding:22px 18px;
+  border-radius:0 0 24px 24px
+}
+header h1{margin:0;font-size:28px}
 header p{margin:5px 0 0;opacity:.7}
 main{max-width:760px;margin:auto;padding:16px}
-.card{background:#fff;padding:16px;border-radius:18px;box-shadow:0 4px 18px #0000000f}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-button,input,select,textarea{font:inherit}
-button{border:0;border-radius:15px;padding:13px;font-weight:700;background:#111827;color:#fff;cursor:pointer}
-button.secondary{background:#e8ecf5;color:#111827}
-button.danger{background:#fee2e2;color:#991b1b}
-.wide{width:100%}
-input,select,textarea{width:100%;border:1px solid #d8dce7;background:#fff;border-radius:15px;padding:13px}
+.card{
+  background:white;
+  padding:18px;
+  border-radius:18px;
+  box-shadow:0 4px 18px #0001;
+  margin-bottom:14px
+}
+button{
+  width:100%;
+  border:0;
+  border-radius:15px;
+  padding:14px;
+  font-size:16px;
+  font-weight:700;
+  background:#111827;
+  color:white;
+  cursor:pointer
+}
+button:disabled{opacity:.6}
+.secondary{background:#e5e7eb;color:#111827}
+.danger{background:#fee2e2;color:#991b1b}
+input,select,textarea{
+  width:100%;
+  padding:13px;
+  border:1px solid #d1d5db;
+  border-radius:14px;
+  font-size:16px;
+  background:white
+}
 textarea{min-height:130px;resize:vertical}
-.row{display:flex;gap:10px}
-.row>*{flex:1}
-section{display:none;margin-top:14px}
-section.active{display:block}
-.stat{font-size:26px;font-weight:800}
-.muted{color:#6b7280;font-size:13px}
-.word{text-align:center;font-size:36px;font-weight:800;margin:28px 0 8px;min-height:48px}
-.translation{text-align:center;font-size:21px;color:#6b7280;min-height:32px}
-.learning-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:22px}
-.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid #eee}
-.item:last-child{border-bottom:0}
-.item-actions{display:flex;align-items:center;gap:5px}
-.pill{display:inline-block;padding:6px 9px;border-radius:999px;background:#eef2ff;font-size:13px}
-.empty{text-align:center;padding:25px 10px;color:#6b7280}
-.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.login-card{width:100%;max-width:430px}
-.logo{text-align:center;font-size:58px}
-.login-title{text-align:center;font-size:28px;font-weight:800}
-.login-sub{text-align:center;color:#6b7280;margin-bottom:24px}
 .field{margin-bottom:12px}
-.message{display:none;margin-top:12px;padding:11px;border-radius:12px;background:#f3f4f6;font-size:14px}
-.message.error{background:#fee2e2;color:#991b1b}
-.message.success{background:#dcfce7;color:#166534}
-.userbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px}
-.useremail{font-size:13px;color:#6b7280;overflow:hidden;text-overflow:ellipsis}
-@media(max-width:520px){.row{flex-direction:column}.word{font-size:30px}}
+.login{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px
+}
+.login-card{width:100%;max-width:430px}
+.logo{text-align:center;font-size:60px}
+.title{text-align:center;font-size:28px;font-weight:800}
+.sub{text-align:center;color:#6b7280;margin-bottom:25px}
+.message{
+  display:none;
+  margin-top:12px;
+  padding:12px;
+  border-radius:12px;
+  font-size:14px;
+  white-space:pre-wrap
+}
+.error{display:block;background:#fee2e2;color:#991b1b}
+.success{display:block;background:#dcfce7;color:#166534}
+.hidden{display:none}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px
+}
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px
+}
+.stat{font-size:26px;font-weight:800}
+.muted{font-size:13px;color:#6b7280}
+section{display:none}
+section.active{display:block}
+.word{
+  text-align:center;
+  font-size:34px;
+  font-weight:800;
+  margin:28px 0 8px
+}
+.answer{
+  text-align:center;
+  min-height:32px;
+  color:#6b7280;
+  font-size:20px
+}
+.item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:13px 0;
+  border-bottom:1px solid #eee
+}
+.item:last-child{border-bottom:0}
+.item button{width:auto;padding:9px 12px}
+@media(max-width:500px){
+  .word{font-size:29px}
+}
 </style>
 </head>
+
 <body>
 
+<!-- LOGIN -->
 <div id="loginScreen" class="login">
-<div class="card login-card">
-<div class="logo">📚</div>
-<div class="login-title">VokabelBuddy</div>
-<div class="login-sub">Jelly · Englisch & Französisch</div>
 
-<div class="field">
-<input id="email" type="email" placeholder="E-Mail">
+  <div class="card login-card">
+
+    <div class="logo">📚</div>
+
+    <div class="title">VokabelBuddy</div>
+
+    <div class="sub">
+      Jelly · Englisch & Französisch
+    </div>
+
+    <div class="field">
+      <input
+        id="email"
+        type="email"
+        placeholder="E-Mail"
+        autocomplete="email">
+    </div>
+
+    <div class="field">
+      <input
+        id="password"
+        type="password"
+        placeholder="Passwort"
+        autocomplete="current-password">
+    </div>
+
+    <button id="loginButton" onclick="login()">
+      🔐 Einloggen
+    </button>
+
+    <div id="loginMessage" class="message"></div>
+
+  </div>
+
 </div>
 
-<div class="field">
-<input id="password" type="password" placeholder="Passwort">
-</div>
 
-<button class="wide" onclick="login()">🔐 Einloggen</button>
-<div id="loginMessage" class="message"></div>
-</div>
-</div>
-
-<div id="app" style="display:none">
+<!-- APP -->
+<div id="app" class="hidden">
 
 <header>
-<h1>📚 VokabelBuddy</h1>
-<p>👦 Jelly · Englisch & Französisch</p>
+  <h1>📚 VokabelBuddy</h1>
+  <p>👦 Jelly · Englisch & Französisch</p>
 </header>
 
 <main>
 
-<div class="card userbar">
-<div>
-<div class="muted">Angemeldet als</div>
-<div id="userEmail" class="useremail"></div>
-</div>
-<button class="secondary" onclick="logout()">Abmelden</button>
-</div>
-
-<div class="grid" style="margin-top:12px">
 <div class="card">
-<div class="muted">🔥 Streak</div>
-<div id="streak" class="stat">0</div>
-</div>
-<div class="card">
-<div class="muted">⭐ XP</div>
-<div id="xp" class="stat">0</div>
-</div>
+
+  <div class="muted">Angemeldet als</div>
+
+  <div id="userEmail" style="font-weight:700;margin:4px 0 12px"></div>
+
+  <button class="secondary" onclick="logout()">
+    Abmelden
+  </button>
+
 </div>
 
-<div class="grid" style="margin-top:12px">
-<button onclick="show('learn')">🎯 Jetzt lernen</button>
-<button class="secondary" onclick="show('add')">➕ Vokabeln</button>
-<button class="secondary" onclick="show('list')">📚 Meine Wörter</button>
-<button class="secondary" onclick="show('parent')">👨‍👩‍👦 Eltern</button>
+
+<div class="stats">
+
+  <div class="card">
+    <div class="muted">🔥 Streak</div>
+    <div id="streak" class="stat">0</div>
+  </div>
+
+  <div class="card">
+    <div class="muted">⭐ XP</div>
+    <div id="xp" class="stat">0</div>
+  </div>
+
 </div>
 
+
+<div class="grid" style="margin-bottom:14px">
+
+  <button onclick="showSection('learn')">
+    🎯 Lernen
+  </button>
+
+  <button class="secondary" onclick="showSection('add')">
+    ➕ Vokabeln
+  </button>
+
+  <button class="secondary" onclick="showSection('list')">
+    📚 Meine Wörter
+  </button>
+
+  <button class="secondary" onclick="showSection('parent')">
+    👨‍👩‍👦 Eltern
+  </button>
+
+</div>
+
+
+<!-- LERNEN -->
 <section id="learn" class="active">
+
 <div class="card">
 
-<div class="row">
-<select id="learnLang" onchange="startLearning()">
-<option value="en">🇬🇧 Englisch</option>
-<option value="fr">🇫🇷 Französisch</option>
-</select>
-<div id="count" class="pill" style="text-align:center">0 Wörter</div>
-</div>
+  <select id="learnLang" onchange="startLearning()">
+    <option value="en">🇬🇧 Englisch</option>
+    <option value="fr">🇫🇷 Französisch</option>
+  </select>
 
-<div id="question" class="word">Lade Vokabeln...</div>
-<div id="answer" class="translation"></div>
+  <div id="count" class="muted" style="text-align:center;margin-top:10px">
+    0 Wörter
+  </div>
 
-<div class="learning-buttons">
-<button onclick="reveal()">👀 Lösung</button>
-<button onclick="grade('hard')">🤔 Schwer</button>
-<button onclick="grade('wrong')">❌ Falsch</button>
-<button onclick="grade('correct')">✅ Richtig</button>
-</div>
+  <div id="question" class="word">
+    Noch keine Vokabeln
+  </div>
 
-</div>
-</section>
+  <div id="answer" class="answer"></div>
 
-<section id="add">
-<div class="card">
-<h2>➕ Vokabeln hinzufügen</h2>
+  <div class="grid" style="margin-top:20px">
 
-<div class="row">
-<select id="addLang">
-<option value="en">🇬🇧 Englisch</option>
-<option value="fr">🇫🇷 Französisch</option>
-</select>
-<input id="lesson" placeholder="Unit / Lektion">
-</div>
+    <button onclick="reveal()">
+      👀 Lösung
+    </button>
 
-<br>
+    <button onclick="grade('hard')">
+      🤔 Schwer
+    </button>
 
-<textarea id="bulk" placeholder="Eine Vokabel pro Zeile:
-
-school = Schule
-teacher = Lehrer
-homework = Hausaufgaben"></textarea>
-
-<button class="wide" style="margin-top:10px" onclick="saveWords()">☁️ Speichern</button>
-
-</div>
-</section>
-
-<section id="list">
-<div class="card">
-<div style="display:flex;justify-content:space-between;align-items:center">
-<h2>📚 Meine Wörter</h2>
-<button class="secondary" onclick="loadWords()">🔄</button>
-</div>
-<div id="wordList"></div>
-</div>
-</section>
-
-<section id="parent">
-<div class="card">
-<h2>👨‍👩‍👦 Elternübersicht</h2>
-
-<div class="grid">
-<div>
-<div class="muted">Beantwortet</div>
-<div id="answers" class="stat">0</div>
-</div>
-<div>
-<div class="muted">Trefferquote</div>
-<div id="accuracy" class="stat">0%</div>
-</div>
-</
+    <button onclick="
