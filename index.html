@@ -1,49 +1,796 @@
-<!doctype html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827"><link rel="manifest" href="manifest.json">
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<link rel="manifest" href="manifest.json">
 <title>VokabelBuddy – Jelly</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:#f4f6fb;color:#111827}
-header{background:#111827;color:#fff;padding:22px 18px;border-radius:0 0 24px 24px}h1{margin:0;font-size:26px}.sub{opacity:.75}
-main{max-width:760px;margin:auto;padding:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.card{background:#fff;padding:16px;border-radius:16px;box-shadow:0 3px 15px #0001}button,input,select,textarea{border-radius:16px}
-button{border:0;padding:13px;font-weight:700;font-size:15px;background:#111827;color:#fff}button.secondary{background:#e8ecf5;color:#111827}
-.wide{width:100%}.stat{font-size:25px;font-weight:800}.muted{color:#6b7280;font-size:13px}section{display:none;margin-top:14px}section.active{display:block}
-.row{display:flex;gap:10px}.row>*{flex:1}input,select,textarea{width:100%;padding:13px;border:1px solid #d8dce7;background:#fff;font-size:16px}
-textarea{min-height:120px}.word{text-align:center;font-size:34px;font-weight:800;margin:24px 0 8px}.translation{text-align:center;font-size:20px;color:#6b7280;min-height:32px}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px}.pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef2ff;font-size:13px}
-.item{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #eee}.notice{padding:12px;border-radius:14px;background:#fff8df;margin-top:10px;font-size:14px}
-</style></head><body>
-<header><h1>📚 VokabelBuddy</h1><div class="sub">👦 Jelly · Englisch & Französisch</div></header><main>
-<div class="grid"><div class="card"><div class="muted">🔥 Streak</div><div class="stat" id="streak">0</div></div><div class="card"><div class="muted">⭐ XP</div><div class="stat" id="xp">0</div></div></div>
-<div class="grid" style="margin-top:12px"><button onclick="show('learn')">🎯 Jetzt lernen</button><button class="secondary" onclick="show('add')">➕ Vokabeln</button></div>
-<div class="grid" style="margin-top:12px"><button class="secondary" onclick="show('list')">📚 Meine Wörter</button><button class="secondary" onclick="show('parent')">👨‍👩‍👦 Eltern</button></div>
-<section id="learn" class="active"><div class="card"><div class="row"><select id="learnLang" onchange="startSession()"><option value="en">🇬🇧 Englisch</option><option value="fr">🇫🇷 Französisch</option></select><span class="pill" id="count">0 Wörter</span></div><div class="word" id="question">Noch keine Vokabeln</div><div class="translation" id="answer"></div><div class="actions"><button onclick="reveal()">👀 Lösung</button><button onclick="grade(2)">🤔 Schwer</button><button onclick="grade(1)">❌ Falsch</button><button onclick="grade(3)">✅ Richtig</button></div></div></section>
-<section id="add"><div class="card"><h2>➕ Vokabeln hinzufügen</h2><div class="row"><select id="addLang"><option value="en">🇬🇧 Englisch</option><option value="fr">🇫🇷 Französisch</option></select><input id="lesson" placeholder="Unit / Lektion"></div><br><textarea id="bulk" placeholder="Eine pro Zeile, z.B.&#10;school = Schule&#10;teacher = Lehrer&#10;homework = Hausaufgaben"></textarea><button class="wide" style="margin-top:10px" onclick="addWords()">💾 Speichern</button><div class="notice">Eine komplette Vokabelliste kann auf einmal eingefügt werden.</div></div></section>
-<section id="list"><div class="card"><h2>📚 Meine Wörter</h2><div id="wordList"></div></div></section>
-<section id="parent"><div class="card"><h2>👨‍👩‍👦 Elternübersicht</h2><div class="grid"><div><div class="muted">Antworten</div><div class="stat" id="answers">0</div></div><div><div class="muted">Trefferquote</div><div class="stat" id="accuracy">0%</div></div></div><p class="muted">Cloud-Synchronisation mit Supabase kommt nach dem Funktionstest.</p></div></section>
-</main><script>
-const KEY='vb_jelly_v3';let db=JSON.parse(localStorage.getItem(KEY)||'{"words":[],"xp":0,"streak":0,"answers":0,"correct":0}'),session={pool:[],i:0};
-function save(){localStorage.setItem(KEY,JSON.stringify(db));stats()}function stats(){xp.textContent=db.xp;streak.textContent=db.streak;answers.textContent=db.answers;accuracy.textContent=(db.answers?Math.round(db.correct/db.answers*100):0)+'%'}
-function show(id){document.querySelectorAll('section').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='learn')startSession();if(id==='list')renderList()}
-function startSession(){let l=learnLang.value;session.pool=db.words.filter(w=>w.language===l);session.i=0;count.textContent=session.pool.length+' Wörter';next()}
-function next(){if(!session.pool.length){question.textContent='Noch keine Vokabeln';answer.textContent='Füge zuerst Wörter hinzu.';return}question.textContent=session.pool[session.i%session.pool.length].word;answer.textContent=''}
-function reveal(){if(session.pool.length)answer.textContent=session.pool[session.i%session.pool.length].translation}
-function grade(n){if(!session.pool.length)return;if(!answer.textContent){reveal();return}db.answers++;if(n===3){db.correct++;db.xp+=10}else if(n===2)db.xp+=4;else db.xp++;save();session.i++;next()}
-function addWords(){let text=bulk.value.trim();if(!text)return alert('Bitte Vokabeln eingeben.');let added=0;text.split(/\n/).forEach(line=>{let p=line.split(/\s*(?:=|;|→|->)\s*/);if(p.length>=2){db.words.push({id:crypto.randomUUID(),language:addLang.value,lesson:lesson.value,word:p[0].trim(),translation:p.slice(1).join('=').trim()});added++}});save();bulk.value='';alert(added+' Vokabeln gespeichert!');show('learn')}
-function renderList(){
-if(!db.words.length){wordList.innerHTML='<p class="muted">Noch keine Vokabeln.</p>';return}
-wordList.innerHTML=db.words.map(w=>'<div class="item"><span><b>'+esc(w.word)+'</b><br><span class="muted">'+esc(w.translation)+(w.lesson?' · '+esc(w.lesson):'')+'</span></span><span><span class="pill">'+(w.language==='en'?'🇬🇧':'🇫🇷')+'</span><button class="secondary" style="padding:7px 9px;margin-left:4px" onclick="deleteWord(\''+w.id+'\')">🗑️</button></span></div>').join('')
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,sans-serif;
+  background:#f4f6fb;
+  color:#111827
 }
-function deleteWord(id){
-const w=db.words.find(x=>x.id===id);
-if(!w)return;
-if(!confirm('Vokabel „'+w.word+'“ wirklich löschen?'))return;
-db.words=db.words.filter(x=>x.id!==id);
-save();
-renderList();
+
+header{
+  background:#111827;
+  color:#fff;
+  padding:22px 18px;
+  border-radius:0 0 24px 24px
+}
+
+h1{
+  margin:0;
+  font-size:26px
+}
+
+.sub{
+  opacity:.75
+}
+
+main{
+  max-width:760px;
+  margin:auto;
+  padding:16px
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px
+}
+
+.card{
+  background:#fff;
+  padding:16px;
+  border-radius:16px;
+  box-shadow:0 3px 15px #0001
+}
+
+button,
+input,
+select,
+textarea{
+  border-radius:16px
+}
+
+button{
+  border:0;
+  padding:13px;
+  font-weight:700;
+  font-size:15px;
+  background:#111827;
+  color:#fff;
+  cursor:pointer
+}
+
+button.secondary{
+  background:#e8ecf5;
+  color:#111827
+}
+
+.wide{
+  width:100%
+}
+
+.stat{
+  font-size:25px;
+  font-weight:800
+}
+
+.muted{
+  color:#6b7280;
+  font-size:13px
+}
+
+section{
+  display:none;
+  margin-top:14px
+}
+
+section.active{
+  display:block
+}
+
+.row{
+  display:flex;
+  gap:10px
+}
+
+.row>*{
+  flex:1
+}
+
+input,
+select,
+textarea{
+  width:100%;
+  padding:13px;
+  border:1px solid #d8dce7;
+  background:#fff;
+  font-size:16px
+}
+
+textarea{
+  min-height:120px
+}
+
+.word{
+  text-align:center;
+  font-size:34px;
+  font-weight:800;
+  margin:24px 0 8px
+}
+
+.translation{
+  text-align:center;
+  font-size:20px;
+  color:#6b7280;
+  min-height:32px
+}
+
+.actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:20px
+}
+
+.pill{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#eef2ff;
+  font-size:13px
+}
+
+.item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:12px 0;
+  border-bottom:1px solid #eee
+}
+
+.item button{
+  padding:7px 9px;
+  margin-left:4px
+}
+
+.notice{
+  padding:12px;
+  border-radius:14px;
+  background:#fff8df;
+  margin-top:10px;
+  font-size:14px
+}
+
+@media(max-width:520px){
+  .word{
+    font-size:30px
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>📚 VokabelBuddy</h1>
+  <div class="sub">👦 Jelly · Englisch & Französisch</div>
+</header>
+
+<main>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="muted">🔥 Streak</div>
+    <div class="stat" id="streak">0</div>
+  </div>
+
+  <div class="card">
+    <div class="muted">⭐ XP</div>
+    <div class="stat" id="xp">0</div>
+  </div>
+
+</div>
+
+<div class="grid" style="margin-top:12px">
+
+  <button onclick="show('learn')">
+    🎯 Jetzt lernen
+  </button>
+
+  <button class="secondary" onclick="show('add')">
+    ➕ Vokabeln
+  </button>
+
+</div>
+
+<div class="grid" style="margin-top:12px">
+
+  <button class="secondary" onclick="show('list')">
+    📚 Meine Wörter
+  </button>
+
+  <button class="secondary" onclick="show('parent')">
+    👨‍👩‍👦 Eltern
+  </button>
+
+</div>
+
+
+<!-- LERNEN -->
+
+<section id="learn" class="active">
+
+<div class="card">
+
+  <div class="row">
+
+    <select id="learnLang" onchange="startSession()">
+
+      <option value="en">
+        🇬🇧 Englisch
+      </option>
+
+      <option value="fr">
+        🇫🇷 Französisch
+      </option>
+
+    </select>
+
+    <span class="pill" id="count">
+      0 Wörter
+    </span>
+
+  </div>
+
+
+  <div class="word" id="question">
+    Noch keine Vokabeln
+  </div>
+
+  <div class="translation" id="answer"></div>
+
+
+  <div class="actions">
+
+    <button onclick="reveal()">
+      👀 Lösung
+    </button>
+
+    <button onclick="grade(2)">
+      🤔 Schwer
+    </button>
+
+    <button onclick="grade(1)">
+      ❌ Falsch
+    </button>
+
+    <button onclick="grade(3)">
+      ✅ Richtig
+    </button>
+
+  </div>
+
+</div>
+
+</section>
+
+
+<!-- VOKABELN HINZUFÜGEN -->
+
+<section id="add">
+
+<div class="card">
+
+<h2>➕ Vokabeln hinzufügen</h2>
+
+<div class="row">
+
+<select id="addLang">
+
+<option value="en">
+🇬🇧 Englisch
+</option>
+
+<option value="fr">
+🇫🇷 Französisch
+</option>
+
+</select>
+
+<input
+id="lesson"
+placeholder="Unit / Lektion">
+
+</div>
+
+<br>
+
+<textarea
+id="bulk"
+placeholder="Eine pro Zeile, z.B.
+school = Schule
+teacher = Lehrer
+homework = Hausaufgaben"></textarea>
+
+<button
+class="wide"
+style="margin-top:10px"
+onclick="addWords()">
+
+💾 Speichern
+
+</button>
+
+<div class="notice">
+
+Tipp: Eine komplette Vokabelliste kann auf einmal eingefügt werden.
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- WORTLISTE -->
+
+<section id="list">
+
+<div class="card">
+
+<h2>📚 Meine Wörter</h2>
+
+<div id="wordList"></div>
+
+</div>
+
+</section>
+
+
+<!-- ELTERN -->
+
+<section id="parent">
+
+<div class="card">
+
+<h2>👨‍👩‍👦 Elternübersicht</h2>
+
+<div class="grid">
+
+<div>
+
+<div class="muted">
+Antworten
+</div>
+
+<div class="stat" id="answers">
+0
+</div>
+
+</div>
+
+
+<div>
+
+<div class="muted">
+Trefferquote
+</div>
+
+<div class="stat" id="accuracy">
+0%
+</div>
+
+</div>
+
+</div>
+
+<p class="muted">
+
+Der aktuelle Prototyp speichert den Lernstand lokal.
+Die Supabase-Synchronisation kommt als nächster Schritt.
+
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+
+<script>
+
+const KEY='vb_jelly_v3';
+
+let db=JSON.parse(
+localStorage.getItem(KEY) ||
+'{"words":[],"xp":0,"streak":0,"answers":0,"correct":0}'
+);
+
+let session={
+pool:[],
+i:0
+};
+
+
+function save(){
+
+localStorage.setItem(
+KEY,
+JSON.stringify(db)
+);
+
+stats();
+
+}
+
+
+function stats(){
+
+document.getElementById('xp').textContent=db.xp;
+
+document.getElementById('streak').textContent=db.streak;
+
+document.getElementById('answers').textContent=db.answers;
+
+document.getElementById('accuracy').textContent=
+(
+db.answers
+?
+Math.round(
+db.correct/db.answers*100
+)
+:
+0
+)+'%';
+
+}
+
+
+function show(id){
+
+document
+.querySelectorAll('section')
+.forEach(x=>x.classList.remove('active'));
+
+document
+.getElementById(id)
+.classList.add('active');
+
+if(id==='learn')
 startSession();
+
+if(id==='list')
+renderList();
+
 }
-function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}stats();startSession();
-if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
-</script></body></html>
+
+
+function startSession(){
+
+let language=
+document.getElementById('learnLang').value;
+
+session.pool=
+db.words.filter(
+w=>w.language===language
+);
+
+session.i=0;
+
+document.getElementById('count').textContent=
+session.pool.length+' Wörter';
+
+next();
+
+}
+
+
+function next(){
+
+if(!session.pool.length){
+
+document.getElementById('question').textContent=
+'Noch keine Vokabeln';
+
+document.getElementById('answer').textContent=
+'Füge zuerst Wörter hinzu.';
+
+return;
+
+}
+
+let w=
+session.pool[
+session.i%session.pool.length
+];
+
+document.getElementById('question').textContent=
+w.word;
+
+document.getElementById('answer').textContent='';
+
+}
+
+
+function reveal(){
+
+if(!session.pool.length)
+return;
+
+document.getElementById('answer').textContent=
+session.pool[
+session.i%session.pool.length
+].translation;
+
+}
+
+
+function grade(n){
+
+if(!session.pool.length)
+return;
+
+if(!document.getElementById('answer').textContent){
+
+reveal();
+
+return;
+
+}
+
+db.answers++;
+
+if(n===3){
+
+db.correct++;
+db.xp+=10;
+
+}
+else if(n===2){
+
+db.xp+=4;
+
+}
+else{
+
+db.xp++;
+
+}
+
+save();
+
+session.i++;
+
+next();
+
+}
+
+
+function addWords(){
+
+let text=
+document.getElementById('bulk').value.trim();
+
+if(!text){
+
+alert('Bitte Vokabeln eingeben.');
+
+return;
+
+}
+
+let added=0;
+
+text
+.split(/\n/)
+.forEach(line=>{
+
+let p=
+line.split(
+/\s*(?:=|;|→|->)\s*/
+);
+
+if(
+p.length>=2 &&
+p[0].trim() &&
+p.slice(1).join('=').trim()
+){
+
+db.words.push({
+
+id:crypto.randomUUID(),
+
+language:
+document.getElementById('addLang').value,
+
+lesson:
+document.getElementById('lesson').value,
+
+word:
+p[0].trim(),
+
+translation:
+p.slice(1).join('=').trim()
+
+});
+
+added++;
+
+}
+
+});
+
+
+save();
+
+document.getElementById('bulk').value='';
+
+alert(
+added+' Vokabeln gespeichert!'
+);
+
+show('learn');
+
+}
+
+
+function renderList(){
+
+let el=
+document.getElementById('wordList');
+
+if(!db.words.length){
+
+el.innerHTML=
+'<p class="muted">Noch keine Vokabeln.</p>';
+
+return;
+
+}
+
+
+el.innerHTML=
+db.words.map(w=>`
+
+<div class="item">
+
+<span>
+
+<b>
+${esc(w.word)}
+</b>
+
+<br>
+
+<span class="muted">
+
+${esc(w.translation)}
+
+${w.lesson
+?
+' · '+esc(w.lesson)
+:
+''}
+
+</span>
+
+</span>
+
+
+<span>
+
+<span class="pill">
+
+${w.language==='en'
+?
+'🇬🇧'
+:
+'🇫🇷'}
+
+</span>
+
+
+<button
+class="secondary"
+onclick="deleteWord('${w.id}')">
+
+🗑️
+
+</button>
+
+</span>
+
+</div>
+
+`).join('');
+
+}
+
+
+function deleteWord(id){
+
+const word=
+db.words.find(
+x=>x.id===id
+);
+
+if(!word)
+return;
+
+
+if(
+!confirm(
+'Vokabel „'+
+word.word+
+'“ wirklich löschen?'
+)
+)
+return;
+
+
+db.words=
+db.words.filter(
+x=>x.id!==id
+);
+
+save();
+
+renderList();
+
+startSession();
+
+}
+
+
+function esc(s){
+
+return s.replace(
+/[&<>"']/g,
+
+c=>({
+
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#039;'
+
+}[c])
+
+);
+
+}
+
+
+stats();
+
+startSession();
+
+
+if(
+'serviceWorker'
+in navigator
+){
+
+navigator
+.serviceWorker
+.register('sw.js');
+
+}
+
+</script>
+
+</body>
+</html>
